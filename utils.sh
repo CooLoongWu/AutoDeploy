@@ -72,18 +72,52 @@ Echo_Blue()
   echo $(Color_Text "$1" "34")
 }
 
-
+# 安装PHP
 Php_Ver="5.5"
 Install_PHP_55()
 {
-    Echo_Yellow "[+] Installing PHP ${Php_Ver}..."
-
-    apt-get install -y php5-cli
-
     if [ -f /usr/bin/php ]; then
-        Echo_Green "You have installed PHP!"
-        php -v
+        Echo_Green "[√] PHP have installed !"
     else
-        Echo_Red "PHP installation failed!"
+        Echo_Yellow "[+] Updating software sources..."
+        # 不打印信息
+        apt-get update 1>/dev/null 2>/dev/null
+        Echo_Green "[√] Update completed..."
+
+        Echo_Yellow "[+] Installing PHP ${Php_Ver}..."
+        apt-get install -y php5-cli 1>/dev/null 2>/dev/null
+            if [ -f /usr/bin/php ]; then
+                Echo_Green "[√] PHP installation completed !"
+            else
+                Echo_Red "[×] PHP installation failed !"
+                Echo_Red "[×] AutoDeploy terminate !"
+                exit 1
+            fi
+    fi
+}
+
+# 判断并安装PHP Libevent扩展
+Install_PHP_Libevent(){
+    modules=(`php -m`)
+    if echo "${modules[@]}" | grep -w "libevent" &>/dev/null; then
+        Echo_Green "[√] libevent have installed !"
+    else
+        Echo_Yellow "[+] Installing PHP extension libevent..."
+        apt-get install -y php-pear php5-dev libevent-dev 1>/dev/null 2>/dev/null
+        pecl install channel://pecl.php.net/libevent-0.1.0 1>/dev/null 2>/dev/null
+        echo extension=libevent.so > /etc/php5/cli/conf.d/libevent.ini
+        Echo_Green "[√] libevent installation completed !"
+    fi
+}
+
+# 替换字符串
+TEMP='xxx'
+Replace_Str(){
+    if [ $#>0 ]; then
+        echo $1
+        #sed -i 's/$TEMP=.*/$TEMP="Hello"' ./test.php
+        sed -i "s/TEMP = '$TEMP'/TEMP = '$1'/g" ./test.php
+        #同时也要修改本文件中的地址，保证不是其他地方的相同字符串被修改
+        sed -i "s/TEMP='$TEMP'/TEMP='$1'/g" ./utils.sh
     fi
 }

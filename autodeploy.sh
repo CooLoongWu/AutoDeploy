@@ -25,13 +25,35 @@ Echo_Blue "+--------------------------------------------------------------------
 Echo_Blue "|---------------A tool to auto-compile & install ${AutoDeploy_Name} on Linux---------------|"
 Echo_Blue "+----------------------------------------------------------------------------------+"
 
-# 安装php5-cli
-if [ -f /usr/bin/php ]; then
-    Echo_Green "You have installed PHP!"
-    php -v
-else
-    Install_PHP_55
-fi
+Install_PHP_55
+Install_PHP_Libevent
 
-php ./check.php
-exit 0
+# 安装php5-cli
+#if [ -f /usr/bin/php ]; then
+#    Echo_Green "[√] PHP have installed!"
+#else
+#    Install_PHP_55
+#fi
+#
+
+
+#for 循环遍历
+#echo ${#modules[@]}
+#for var in ${modules[@]};
+#do
+#    echo $var
+#done
+
+# 解决按下删除按键出现^H却无法删除的情况
+#stty erase '^H'
+#read -p `Echo_Yellow "请输入姓名："` name
+#
+#if [ -n "$name" ]; then
+#    Replace_Str "$name"
+#else
+#    echo "选择了默认"
+#fi
+
+
+#php ./check.php
+#exit 0
