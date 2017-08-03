@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # 引入工具文件
-. utils.sh
+. auto_utils.sh
+#chmod 777 ./auto_utils.sh
 
 AutoDeploy_Ver='1.0'
 AutoDeploy_Name='AutoDeploy'
@@ -25,8 +26,22 @@ Echo_Blue "+--------------------------------------------------------------------
 Echo_Blue "|---------------A tool to auto-compile & install ${AutoDeploy_Name} on Linux---------------|"
 Echo_Blue "+----------------------------------------------------------------------------------+"
 
+Echo_Blue
+Echo_Blue "Step 1、Check PHP environment"
 Install_PHP_55
-Install_PHP_Libevent
+Check_PHP_Pcntl
+Check_PHP_Posix
+Check_PHP_Libevent
+
+Echo_Blue
+Echo_Blue "Step 2、Check system environment"
+Performance_Net
+Performance_SoftOpenFiles
+
+Echo_Blue
+Echo_Blue "Step 3、Modify AutoDeploySystem configuration "
+
+Reboot
 
 # 安装php5-cli
 #if [ -f /usr/bin/php ]; then
