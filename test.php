@@ -7,5 +7,8 @@
  */
 
 $TEMP = 'xxx';
+$IP_REGISTER = 'xxx';
+$IP_DETECTION = 'xxx';
+$IP_REDIS = 'xxx';
 
 echo $TEMP;
